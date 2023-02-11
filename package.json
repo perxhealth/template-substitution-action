@@ -29,7 +29,8 @@
     "url": "https://github.com/perxhealth/template-substitution-action/issues"
   },
   "dependencies": {
-    "@actions/core": "^1.10.0"
+    "@actions/core": "^1.10.0",
+    "envsub": "^4.1.0"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
