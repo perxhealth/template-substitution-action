@@ -1,8 +1,36 @@
+import fs from "fs"
+import assert from "assert"
+
 import * as core from "@actions/core"
+import envsub from "envsub"
 
 async function run(): Promise<void> {
   try {
-    // Do the things
+    // Retrieve all required inputs
+    const fromPath = core.getInput("from", { required: true })
+    const toPath = core.getInput("to", { required: false })
+
+    // Perform some basic validation on `from`
+    assert(
+      fs.existsSync(fromPath),
+      `Path specified in 'from' does not exist: ${fromPath}`
+    )
+
+    // If `to` has been supplied, also ensure it doesn't already exist
+    assert(
+      toPath && fs.existsSync(toPath),
+      `Path specified in 'to' already exists: ${toPath}`
+    )
+
+    // Delegate work to `envsub`
+    await core.group("Substituting...", async () => {
+      return envsub({ templateFile: fromPath, outputFile: toPath }).then(
+        (result: { templateFile: string; outputFile: string }) => {
+          console.log(`:absorb: From: ${result.templateFile}`)
+          console.log(`:output: To: ${result.outputFile}`)
+        }
+      )
+    })
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message)
