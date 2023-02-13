@@ -43,7 +43,16 @@ inputs.
 
 ### Outputs
 
-The Action currently produces no outputs.
+The Action currently supports two outputs.
+
+1. `content`
+
+   Provides the hydrated template's content for use, already in memory.
+
+2. `to`
+
+   Provides the path at which the hydrated template exists. Useful if
+   `inputs.to` was ommitted in your use case.
 
 ## AWS Credentials
 

@@ -10,6 +10,11 @@ inputs:
   to:
     description: Optionally specify the target output path. If none is provided, we'll use the `to` path with `.tpl` removed
     required: false
+outputs:
+  content:
+    description: Provides all content resultant from template substitution
+  to:
+    description: Provides the path at which the hydrated file is located. Useful if `to` input was not provided
 runs:
   using: node16
   main: dist/index.js

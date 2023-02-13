@@ -1,6 +1,8 @@
 import fs from "fs"
 import assert from "assert"
 
+import { emojify } from "node-emoji"
+
 import * as core from "@actions/core"
 import envsub from "envsub"
 
@@ -25,9 +27,14 @@ async function run(): Promise<void> {
     // Delegate work to `envsub`
     await core.group("Substituting...", async () => {
       return envsub({ templateFile: fromPath, outputFile: toPath }).then(
-        (result: { templateFile: string; outputFile: string }) => {
-          console.log(`:absorb: From: ${result.templateFile}`)
-          console.log(`:output: To: ${result.outputFile}`)
+        async (result: EnvsubResult) => {
+          // Log results for transparency and visual feedback
+          console.log(emojify(`:bookmark_tabs: From: ${result.templateFile}`))
+          console.log(emojify(`:writing_hand: To: ${result.outputFile}`))
+
+          // Assign outputs
+          await core.setOutput("content", result.outputContents)
+          await core.setOutput("to", result.outputFile)
         }
       )
     })
