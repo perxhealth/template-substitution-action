@@ -20,7 +20,7 @@ async function run(): Promise<void> {
 
     // If `to` has been supplied, also ensure it doesn't already exist
     assert(
-      fs.existsSync(toPath),
+      !fs.existsSync(toPath),
       `Path specified in 'to' already exists: ${toPath}`
     )
 
