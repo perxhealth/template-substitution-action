@@ -1,5 +1,6 @@
 import fs from "fs"
 import assert from "assert"
+import path from "path"
 
 import { emojify } from "node-emoji"
 
@@ -28,6 +29,7 @@ async function run(): Promise<void> {
     await core.group("Preparing...", async () => {
       return new Promise<void>((resolve, reject) => {
         try {
+          fs.mkdirSync(path.parse(toPath).dir, { recursive: true })
           fs.closeSync(fs.openSync(toPath, "w"))
           resolve()
         } catch (e) {

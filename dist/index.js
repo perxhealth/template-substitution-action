@@ -44,6 +44,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 const assert_1 = __importDefault(__nccwpck_require__(9491));
+const path_1 = __importDefault(__nccwpck_require__(1017));
 const node_emoji_1 = __nccwpck_require__(5244);
 const core = __importStar(__nccwpck_require__(7733));
 const envsub_1 = __importDefault(__nccwpck_require__(6238));
@@ -61,6 +62,7 @@ function run() {
             yield core.group("Preparing...", () => __awaiter(this, void 0, void 0, function* () {
                 return new Promise((resolve, reject) => {
                     try {
+                        fs_1.default.mkdirSync(path_1.default.parse(toPath).dir, { recursive: true });
                         fs_1.default.closeSync(fs_1.default.openSync(toPath, "w"));
                         resolve();
                     }
