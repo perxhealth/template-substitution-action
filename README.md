@@ -1,73 +1,45 @@
 ![Perx Health](https://user-images.githubusercontent.com/4101096/163123610-9dfa9263-1518-4f5d-8839-9ddc142a513e.png)
 
-# Static Deploy to AWS
+# Template Substitution Action
 
-This repository contains a **GitHub Action** allowing you to deploy assets, such
-as a static site, to an AWS S3 bucket.
-
-It is also expected that the relevant bucket is behind a Cloudfront
-Distribution, against which the Action creates an Invalidation after successful
-deployment.
+This repository contains a **GitHub Action** allowing you to hydrate `*.tpl`
+files from the environment. It's essentially `envsubst`, GitHub Action'ified.
 
 ## Usage
 
 Add the following `step` to a GitHub Actions workflow.
 
 ```yaml
-- name: 🚀 Deploy
-  uses: perxhealth/static-deploy-action@v1
+- name: Generate Database Config
+  uses: perxhealth/template-substitution-action@v1
   with:
-    from: dist/
-    to: s3://your-s3-bucket-uri
-    cloudfront-distribution-id: KJPAKNWQ4OR54
+    from: ci/templates/database-config.json.tpl
+    to: app/repo/database-config.json
 ```
 
 ### Inputs
 
-The Action currently expects three required inputs, and no further optional
+The Action currently expects two required inputs, and no further optional
 inputs.
 
 1. `from`
 
-   Path to a directory on local disk in which all files within will be uploaded,
-   overwriting files in the S3 bucket with the same name.
+   Path to a file on local disk expected to be in `*.tpl` format, from which
+   we'll generate the hydrated file.
 
 2. `to`
 
-   Fully qualified S3 remote path. Must start with `s3://`.
-
-3. `cloudfront-distribution-id`
-
-   Upon successful upload of the files nominated in `from`, this is the
-   Cloudfront Distribution on which we'll create an `Invalidation`.
+   Path to desired output location on local disk where the hydrated file will
+   be placed. Includes file name.
 
 ### Outputs
 
-The Action currently supports two outputs.
+The Action currently supports a single output.
 
-1. `content`
+1. `location`
 
-   Provides the hydrated template's content for use, already in memory.
-
-2. `to`
-
-   Provides the path at which the hydrated template exists. Useful if
-   `inputs.to` was ommitted in your use case.
-
-## AWS Credentials
-
-The Action currently expects AWS credentials to exist in the environment, with
-sufficient permissions to perform the following actions.
-
-### S3
-
-- `ListObjects`
-- `PutObject`
-- `DeleteObject`
-
-### Cloudfront
-
-- `CreateInvalidation`
+   Essentially provides the `to` input as an output, useful in cases where
+   `to` may have been dynamically generated.
 
 ## Development
 
@@ -84,8 +56,8 @@ You will need the following tools installed on your machine.
 ### Clone the repository
 
 ```bash
-$ git clone git@github.com:perxhealth/static-deploy-action
-$ cd static-deploy-action
+$ git clone git@github.com:perxhealth/template-substitution-action
+$ cd template-substitution-action
 ```
 
 ### Install dependencies
