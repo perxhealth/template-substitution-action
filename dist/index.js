@@ -57,6 +57,10 @@ function run() {
             (0, assert_1.default)(fs_1.default.existsSync(fromPath), `Path specified in 'from' does not exist: ${fromPath}`);
             // If `to` has been supplied, also ensure it doesn't already exist
             (0, assert_1.default)(!fs_1.default.existsSync(toPath), `Path specified in 'to' already exists: ${toPath}`);
+            // First, we need to create the output file. `envsub` does not create it
+            yield core.group("Preparing...", () => __awaiter(this, void 0, void 0, function* () {
+                fs_1.default.closeSync(fs_1.default.openSync(toPath, "w"));
+            }));
             // Delegate work to `envsub`
             yield core.group("Substituting...", () => __awaiter(this, void 0, void 0, function* () {
                 return (0, envsub_1.default)({ templateFile: fromPath, outputFile: toPath }).then((result) => __awaiter(this, void 0, void 0, function* () {

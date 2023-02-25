@@ -24,6 +24,11 @@ async function run(): Promise<void> {
       `Path specified in 'to' already exists: ${toPath}`
     )
 
+    // First, we need to create the output file. `envsub` does not create it
+    await core.group("Preparing...", async () => {
+      fs.closeSync(fs.openSync(toPath, "w"))
+    })
+
     // Delegate work to `envsub`
     await core.group("Substituting...", async () => {
       return envsub({ templateFile: fromPath, outputFile: toPath }).then(
