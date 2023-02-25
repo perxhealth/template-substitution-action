@@ -8,8 +8,8 @@ inputs:
     description: Path on local disk where the target `.tpl.*` can be found
     required: true
   to:
-    description: Optionally specify the target output path. If none is provided, we'll use the `to` path with `.tpl` removed
-    required: false
+    description: Specify the target output path, including file name
+    required: true
 outputs:
   content:
     description: Provides all content resultant from template substitution

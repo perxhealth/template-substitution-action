@@ -10,7 +10,7 @@ async function run(): Promise<void> {
   try {
     // Retrieve all required inputs
     const fromPath = core.getInput("from", { required: true })
-    const toPath = core.getInput("to", { required: false })
+    const toPath = core.getInput("to", { required: true })
 
     // Perform some basic validation on `from`
     assert(
@@ -20,7 +20,7 @@ async function run(): Promise<void> {
 
     // If `to` has been supplied, also ensure it doesn't already exist
     assert(
-      toPath && fs.existsSync(toPath),
+      fs.existsSync(toPath),
       `Path specified in 'to' already exists: ${toPath}`
     )
 
