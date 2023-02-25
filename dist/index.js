@@ -52,11 +52,11 @@ function run() {
         try {
             // Retrieve all required inputs
             const fromPath = core.getInput("from", { required: true });
-            const toPath = core.getInput("to", { required: false });
+            const toPath = core.getInput("to", { required: true });
             // Perform some basic validation on `from`
             (0, assert_1.default)(fs_1.default.existsSync(fromPath), `Path specified in 'from' does not exist: ${fromPath}`);
             // If `to` has been supplied, also ensure it doesn't already exist
-            (0, assert_1.default)(toPath && fs_1.default.existsSync(toPath), `Path specified in 'to' already exists: ${toPath}`);
+            (0, assert_1.default)(fs_1.default.existsSync(toPath), `Path specified in 'to' already exists: ${toPath}`);
             // Delegate work to `envsub`
             yield core.group("Substituting...", () => __awaiter(this, void 0, void 0, function* () {
                 return (0, envsub_1.default)({ templateFile: fromPath, outputFile: toPath }).then((result) => __awaiter(this, void 0, void 0, function* () {
@@ -64,8 +64,7 @@ function run() {
                     console.log((0, node_emoji_1.emojify)(`:bookmark_tabs: From: ${result.templateFile}`));
                     console.log((0, node_emoji_1.emojify)(`:writing_hand: To: ${result.outputFile}`));
                     // Assign outputs
-                    yield core.setOutput("content", result.outputContents);
-                    yield core.setOutput("to", result.outputFile);
+                    yield core.setOutput("location", result.outputFile);
                 }));
             }));
         }
