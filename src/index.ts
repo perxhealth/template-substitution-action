@@ -33,8 +33,7 @@ async function run(): Promise<void> {
           console.log(emojify(`:writing_hand: To: ${result.outputFile}`))
 
           // Assign outputs
-          await core.setOutput("content", result.outputContents)
-          await core.setOutput("to", result.outputFile)
+          await core.setOutput("location", result.outputFile)
         }
       )
     })

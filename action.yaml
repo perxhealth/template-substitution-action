@@ -11,10 +11,8 @@ inputs:
     description: Specify the target output path, including file name
     required: true
 outputs:
-  content:
-    description: Provides all content resultant from template substitution
-  to:
-    description: Provides the path at which the hydrated file is located. Useful if `to` input was not provided
+  location:
+    description: Essentially provides the `to` input as an output, useful in cases where `to` may have been dynamically generated.
 runs:
   using: node16
   main: dist/index.js
