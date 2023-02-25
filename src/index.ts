@@ -26,7 +26,14 @@ async function run(): Promise<void> {
 
     // First, we need to create the output file. `envsub` does not create it
     await core.group("Preparing...", async () => {
-      fs.closeSync(fs.openSync(toPath, "w"))
+      return new Promise<void>((resolve, reject) => {
+        try {
+          fs.closeSync(fs.openSync(toPath, "w"))
+          resolve()
+        } catch (e) {
+          reject(e)
+        }
+      })
     })
 
     // Delegate work to `envsub`
